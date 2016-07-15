@@ -1,0 +1,29 @@
+librenms:
+  config:
+    db:
+      extension: mysqli
+      host: localhost
+      user: librenms
+      database: librenms
+      password: 'sUp3r$ecu3r'
+    memcached:
+      enable: FALSE
+      host: localhost
+      port: 11211
+    snmp_community: public
+    auth_mechanism: mysql
+    poller_wrapper: FALSE
+    users:
+      admin:
+        password: 'sUp3r$ecu3r'
+        level: '10'
+        email: 'admin@example.com'
+      randomuser:
+        password: 'sUp3r$ecu3r'
+        level: '10'
+        email: 'randomuser@example.com'
+
+    custom_options:
+      - "$config['oxidized']['enabled']         = TRUE;"
+      - "$config['oxidized']['url']             = 'http://127.0.0.1:8888';"
+      - "$config['oxidized']['features']['versioning'] = true;"

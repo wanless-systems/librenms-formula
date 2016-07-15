@@ -1,0 +1,49 @@
+{% set librenms = salt['pillar.get']('librenms', {
+     'lookup': salt['grains.filter_by']({
+        'Debian': {
+            'pkgs': [
+                'rrdtool',
+                'fping',
+                'git',
+            ],
+            'webserver_group': 'www-data',
+        },
+        'RedHat': {
+            'pkgs': [
+                'rrdtool',
+                'fping',
+                'git',
+                'mtr',
+                'nmap',
+                'jwhois',
+                'graphviz',
+                'graphviz-php',
+                'ImageMagick',
+                'MySQL-python',
+                'cronie'
+            ],
+            'webserver_group': 'apache',
+        },
+    }),
+    'general': {
+        'user': 'librenms',
+        'group': 'librenms',
+        'home': '/opt/librenms',
+    },
+    'config': {
+        'db': {
+            'extension': 'mysqli',
+            'host': 'localhost',
+            'user': 'librenms',
+            'database': 'librenms'
+        },
+        'memcached': {
+            'enable': 'FALSE;',
+            'host': 'localhost;',
+            'port': '11211;'
+        },
+        'snmp_community': 'public',
+        'auth_mechanism': 'mysql',
+        'poller_wrapper': 'FALSE',
+    },
+}, merge=True) %}
