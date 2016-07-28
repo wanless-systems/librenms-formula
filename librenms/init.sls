@@ -16,8 +16,7 @@ librenms_config:
   file.managed:
     - name: {{ librenms.general.home }}/config.php
     - source: salt://librenms/files/config.php
-    - user: {{ librenms.general.user }}
-    - group: {{ librenms.general.group }}
+    - mode: 640
     - template: jinja
     - require:
       - git: librenms_git
@@ -40,16 +39,12 @@ librenms_user:
 librenms_log_folder:
   file.directory:
     - name: {{ librenms.general.home }}/logs
-    - user:  {{ librenms.general.user }}
-    - group:  {{ librenms.general.group }}
     - require:
       - git: librenms_git
 
 librenms_rrd_folder:
   file.directory:
     - name: {{ librenms.general.home }}/rrd
-    - user:  {{ librenms.general.user }}
-    - group:  {{ librenms.general.group }}
     - mode: 775
     - require:
       - git: librenms_git

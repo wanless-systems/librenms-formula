@@ -25,7 +25,7 @@ Installs librenms
 
 Initialises database
 
-``librenms.user``
+``librenms.users``
 ------------------
 
 Creates webUI users
