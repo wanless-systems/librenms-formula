@@ -65,8 +65,8 @@ librenms_directory:
       - file: librenms_rrd_folder
 
 librenms_crontab:
-  cron.file:
-    - name: {{ librenms.general.home }}/librenms.nonroot.cron
-    - user: librenms
+  file.managed:
+    - name: /etc/cron.d/librenms
+    - source: {{ librenms.general.home }}/librenms.nonroot.cron
     - require:
       - git: librenms_git
