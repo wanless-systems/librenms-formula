@@ -71,8 +71,21 @@ librenms_rrd_folder:
       - git: librenms_git
 
 librenms_crontab:
+{% if grains['os_family'] == 'FreeBSD' %}
+{# FreeBSD has no /etc/cron.d/ and a uses slightly different format #}
+  cmd.run:
+    - name: "sed 's/  librenms    /  /g' '{{ librenms.general.home }}/librenms.nonroot.cron' > /var/cron/tabs/librenms"
+    - onchanges:
+      - git: librenms_git
+  file.managed:
+    - name: /var/cron/tabs/librenms
+    - mode: 600
+    - user: root
+    - group: wheel
+{% else %}
   file.managed:
     - name: /etc/cron.d/librenms
     - source: {{ librenms.general.home }}/librenms.nonroot.cron
     - require:
       - git: librenms_git
+{% endif %}
