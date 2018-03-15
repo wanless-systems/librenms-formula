@@ -3,14 +3,22 @@ librenms_pkgs_install:
   pkg.installed:
     - names: {{ librenms.lookup.pkgs }}
 
+librenms_directory:
+  file.directory:
+    - name: {{ librenms.general.home }}
+    - user: {{ librenms.general.user }}
+    - group: {{ librenms.general.group }}
+
 librenms_git:
   git.latest:
     - name: https://github.com/librenms/librenms.git
+    - user: {{ librenms.general.user }}
     - target: {{ librenms.general.home }}
     - force_clone: True
     - require:
       - pkg: librenms_pkgs_install
       - user: librenms_user
+      - file: librenms_directory
 
 librenms_config:
   file.managed:
@@ -41,28 +49,26 @@ librenms_user:
 librenms_log_folder:
   file.directory:
     - name: {{ librenms.general.home }}/logs
+    - user: {{ librenms.general.user }}
+    - group: {{ librenms.general.group }}
+    - recurse:
+      - user
+      - group
+    - mode: 775
     - require:
       - git: librenms_git
 
 librenms_rrd_folder:
   file.directory:
     - name: {{ librenms.general.home }}/rrd
-    - mode: 775
-    - require:
-      - git: librenms_git
-
-librenms_directory:
-  file.directory:
-    - name: {{ librenms.general.home }}
     - user: {{ librenms.general.user }}
     - group: {{ librenms.general.group }}
     - recurse:
       - user
       - group
+    - mode: 775
     - require:
       - git: librenms_git
-      - file: librenms_log_folder
-      - file: librenms_rrd_folder
 
 librenms_crontab:
   file.managed:
