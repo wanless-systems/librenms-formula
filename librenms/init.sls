@@ -89,3 +89,10 @@ librenms_crontab:
     - require:
       - git: librenms_git
 {% endif %}
+
+librenms_compose_install:
+  cmd.run:
+    - name: ./scripts/composer_wrapper.php install --no-dev
+    - cwd: {{ librenms.general.home }}
+    - onchanges:
+      - git: librenms_git
