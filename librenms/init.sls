@@ -14,11 +14,41 @@ librenms_git:
     - name: https://github.com/librenms/librenms.git
     - user: {{ librenms.general.user }}
     - target: {{ librenms.general.home }}
+    - force_checkout: True
     - force_clone: True
+    - force_fetch: True
+    - force_reset: True
     - require:
       - pkg: librenms_pkgs_install
       - user: librenms_user
       - file: librenms_directory
+
+{% if librenms.config.base_path is defined %}
+{% set customfile = librenms.general.home + "/html/plugins/custom-htaccess.conf" %}
+librenms_remove_custom_htaccess_if_setting_changed:
+  cmd.run:
+    - name: rm -f {{ customfile }}
+    - unless: grep -q "RewriteBase {{ librenms.config.base_path }}$" {{ customfile }} 
+librenms_custom_htaccess:
+  file.copy:
+    # html/plugins/* is ignored by .gitignore
+    - name: {{ customfile }}
+    - source: {{ librenms.general.home }}/html/.htaccess
+    - force: true
+    - require:
+      - cmd: librenms_remove_custom_htaccess_if_setting_changed
+    - onchanges:
+      - git: librenms_git
+      - cmd: librenms_remove_custom_htaccess_if_setting_changed
+librenms_custom_rewrite_base:
+  file.replace:
+    - name: {{ customfile }}
+    - pattern: 'RewriteBase .*$'
+    - repl: "RewriteBase {{ librenms.config.base_path }}"
+    - onchanges:
+      - file: librenms_custom_htaccess
+{% endif %}
+
 
 librenms_config:
   file.managed:

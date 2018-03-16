@@ -24,11 +24,19 @@ $config['user'] = '{{ librenms.general.user }}';
 
 ### This should *only* be set if you want to *force* a particular hostname/port
 ### It will prevent the web interface being usable form any other hostname
-{% if librenms.config.base_url is not defined -%}
+{% set base_url = '' -%}
+{%- if librenms.config.base_url is not defined -%}
 #$config['base_url']        = "http://librenms.company.com";
-{%- else -%}
-$config['base_url']        = "{{ librenms.config.base_url }}";
-{% endif %}
+{%  else -%}
+{%-   set base_url = librenms.config.base_url %}
+{%- endif %}
+{%- if librenms.config.base_path is defined -%}
+{%    set base_url = base_url + librenms.config.base_path + '/' -%}
+{%- endif %}
+{%- if base_url != '' -%}
+$config['base_url']        = "{{ base_url }}";
+{%- endif %}
+
 ### Enable this to use rrdcached. Be sure rrd_dir is within the rrdcached dir
 ### and that your web server has permission to talk to rrdcached.
 {% if librenms.config.rrdcached is not defined -%}
