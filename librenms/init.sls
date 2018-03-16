@@ -14,6 +14,7 @@ librenms_git:
     - name: https://github.com/librenms/librenms.git
     - user: {{ librenms.general.user }}
     - target: {{ librenms.general.home }}
+    - rev: {{ librenms.get('revision', 'master') }}
     - force_checkout: True
     - force_clone: True
     - force_fetch: True

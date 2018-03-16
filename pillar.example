@@ -1,4 +1,7 @@
 librenms:
+  # branch, tag or commit you want to use
+  # defaults to 'master'
+  revision: master
   config:
     db:
       extension: mysqli
