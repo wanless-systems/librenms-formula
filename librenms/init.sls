@@ -79,6 +79,8 @@ librenms_user:
   group.present:
     - name: {{ librenms.general.group }}
     - system: True
+    - addusers:
+      - {{ librenms.lookup.webserver_user }}
 
 librenms_log_folder:
   file.directory:
