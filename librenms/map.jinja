@@ -2,9 +2,16 @@
      'lookup': salt['grains.filter_by']({
         'Debian': {
             'pkgs': [
-                'rrdtool',
                 'fping',
                 'git',
+                'graphviz',
+                'imagemagick',
+                'mtr-tiny',
+                'nmap',
+                'python-mysqldb',
+                'rrdtool',
+                'snmp',
+                'whois',
             ],
             'webserver_group': 'www-data',
         },
