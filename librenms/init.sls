@@ -8,6 +8,9 @@ librenms_directory:
     - name: {{ librenms.general.home }}
     - user: {{ librenms.general.user }}
     - group: {{ librenms.general.group }}
+    - require:
+      - user: librenms_user
+      - group: librenms_user
 
 librenms_git:
   git.latest:
