@@ -1,4 +1,7 @@
 librenms:
+  # branch, tag or commit you want to use
+  # defaults to 'master'
+  revision: master
   config:
     db:
       extension: mysqli
@@ -22,6 +25,19 @@ librenms:
         password: 'sUp3r$ecu3r'
         level: '10'
         email: 'randomuser@example.com'
+
+    # This should *only* be set if you want to *force* a particular hostname/port
+    # It will prevent the web interface being usable form any other hostname
+
+    base_url: https://example.com
+    # https://github.com/librenms/librenms/blob/master/doc/Extensions/Sub-Directory.md
+    # In order to maintain upgradablility, we create a custom htaccess file
+    # which you need to include into your Apache config:
+    #
+    # <Directory /opt/librenms/html>
+    #  Include /opt/librenms/html/plugins/custom-htaccess.conf
+    # </Directory>
+    base_path: "/librenms/"
 
     custom_options:
       - "$config['oxidized']['enabled']         = TRUE;"
