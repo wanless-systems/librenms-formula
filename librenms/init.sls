@@ -26,6 +26,7 @@ librenms_git:
       - pkg: librenms_pkgs_install
       - user: librenms_user
       - file: librenms_directory
+    - onlyif: "LANG=C git status | grep -q 'ahead\\|behind'"
 
 {% if librenms.config.base_path is defined %}
 {% set customfile = librenms.general.home + "/html/plugins/custom-htaccess.conf" %}
