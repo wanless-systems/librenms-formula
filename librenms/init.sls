@@ -72,7 +72,7 @@ librenms_user:
       - {{ librenms.general.group }}
       - {{ librenms.lookup.webserver_group }}
     - home: {{ librenms.general.home }}
-    - shell: /bin/false
+    - shell: {{ librenms.lookup.nologin_shell}}
     - system: True
     - require:
       - group: librenms_user
