@@ -111,7 +111,7 @@ librenms_crontab:
 {% if grains['os_family'] == 'FreeBSD' %}
 {# FreeBSD has no /etc/cron.d/ and a uses slightly different format #}
   cmd.run:
-    - name: "sed 's/  librenms    /  /g' '{{ librenms.general.home }}/librenms.nonroot.cron' > /var/cron/tabs/librenms"
+    - name: "sed 's#  librenms    #  #g' '{{ librenms.general.home }}/librenms.nonroot.cron' | sed 's#/opt/librenms#{{ librenms.general.home }}#g' > /var/cron/tabs/librenms"
     - onchanges:
       - git: librenms_git
   file.managed:
