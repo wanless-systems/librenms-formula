@@ -26,6 +26,7 @@ librenms_git:
       - pkg: librenms_pkgs_install
       - user: librenms_user
       - file: librenms_directory
+    - onlyif: "LANG=C git status | grep -q 'ahead\\|behind'"
 
 {% if librenms.config.base_path is defined %}
 {% set customfile = librenms.general.home + "/html/plugins/custom-htaccess.conf" %}
@@ -72,7 +73,7 @@ librenms_user:
       - {{ librenms.general.group }}
       - {{ librenms.lookup.webserver_group }}
     - home: {{ librenms.general.home }}
-    - shell: /bin/false
+    - shell: {{ librenms.lookup.nologin_shell}}
     - system: True
     - require:
       - group: librenms_user
@@ -110,7 +111,7 @@ librenms_crontab:
 {% if grains['os_family'] == 'FreeBSD' %}
 {# FreeBSD has no /etc/cron.d/ and a uses slightly different format #}
   cmd.run:
-    - name: "sed 's/  librenms    /  /g' '{{ librenms.general.home }}/librenms.nonroot.cron' > /var/cron/tabs/librenms"
+    - name: "sed 's#  librenms    #  #g' '{{ librenms.general.home }}/librenms.nonroot.cron' | sed 's#/opt/librenms#{{ librenms.general.home }}#g' > /var/cron/tabs/librenms"
     - onchanges:
       - git: librenms_git
   file.managed:

@@ -15,6 +15,7 @@
             ],
             'webserver_user': 'www-data',
             'webserver_group': 'www-data',
+            'nologin_shell': '/bin/false',
         },
         'RedHat': {
             'pkgs': [
@@ -32,6 +33,7 @@
             ],
             'webserver_user': 'apache',
             'webserver_group': 'apache',
+            'nologin_shell': '/bin/false',
         },
         'FreeBSD': {
             'pkgs': [
@@ -41,11 +43,13 @@
                 'ImageMagick-nox11',
                 'mtr-nox11',
                 'nmap',
+                'py27-MySQLdb',
                 'rrdtool',
                 'whois',
             ],
             'webserver_user': 'www',
             'webserver_group': 'www',
+            'nologin_shell': '/usr/sbin/nologin',
         },
     }),
     'general': {
