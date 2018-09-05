@@ -130,7 +130,7 @@ librenms_crontab:
 librenms_compose_install:
   cmd.run:
     - name: ./scripts/composer_wrapper.php install --no-dev
-    - user: {{ librenms.general.user }}
+    - runas: {{ librenms.general.user }}
     - cwd: {{ librenms.general.home }}
     - onchanges:
       - git: librenms_git
