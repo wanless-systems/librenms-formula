@@ -26,7 +26,7 @@ librenms_git:
       - pkg: librenms_pkgs_install
       - user: librenms_user
       - file: librenms_directory
-    - onlyif: "LANG=C git status | grep -q 'ahead\\|behind'"
+    - unless: "LANG=C git status | grep -qv 'ahead\\|behind'"
 
 {% if librenms.config.base_path is defined %}
 {% set customfile = librenms.general.home + "/html/plugins/custom-htaccess.conf" %}
@@ -130,7 +130,7 @@ librenms_crontab:
 librenms_compose_install:
   cmd.run:
     - name: ./scripts/composer_wrapper.php install --no-dev
-    - user: {{ librenms.general.user }}
+    - runas: {{ librenms.general.user }}
     - cwd: {{ librenms.general.home }}
     - onchanges:
       - git: librenms_git
