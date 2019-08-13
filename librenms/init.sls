@@ -8,6 +8,7 @@ librenms_directory:
     - name: {{ librenms.general.home }}
     - user: {{ librenms.general.user }}
     - group: {{ librenms.general.group }}
+    - mode: 751
     - require:
       - user: librenms_user
       - group: librenms_user
@@ -33,7 +34,7 @@ librenms_git:
 librenms_remove_custom_htaccess_if_setting_changed:
   cmd.run:
     - name: rm -f {{ customfile }}
-    - unless: grep -q "RewriteBase {{ librenms.config.base_path }}$" {{ customfile }} 
+    - unless: grep -q "RewriteBase {{ librenms.config.base_path }}$" {{ customfile }}
 librenms_custom_htaccess:
   file.copy:
     # html/plugins/* is ignored by .gitignore
