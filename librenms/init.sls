@@ -3,16 +3,6 @@ librenms_pkgs_install:
   pkg.installed:
     - names: {{ librenms.lookup.pkgs }}
 
-librenms_directory:
-  file.directory:
-    - name: {{ librenms.general.home }}
-    - user: {{ librenms.general.user }}
-    - group: {{ librenms.general.group }}
-    - mode: 751
-    - require:
-      - user: librenms_user
-      - group: librenms_user
-
 librenms_git:
   git.latest:
     - name: https://github.com/librenms/librenms.git
@@ -28,6 +18,19 @@ librenms_git:
       - user: librenms_user
       - file: librenms_directory
     - unless: "LANG=C git status | grep -qv 'ahead\\|behind'"
+
+librenms_directory:
+  file.directory:
+    - name: {{ librenms.general.home }}
+    - user: {{ librenms.general.user }}
+    - group: {{ librenms.general.group }}
+    - recurse:
+        - user
+        - group
+    - mode: 750
+    - require:
+      - user: librenms_user
+      - group: librenms_user
 
 {% if librenms.config.base_path is defined %}
 {% set customfile = librenms.general.home + "/html/plugins/custom-htaccess.conf" %}
